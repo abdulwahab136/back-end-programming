@@ -1,7 +1,7 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.engine.internal.Cascade;
 
 import java.util.Set;
@@ -9,7 +9,10 @@ import java.util.Set;
 
 @Entity
 @Table(name="customers")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class Customer {
     @Id

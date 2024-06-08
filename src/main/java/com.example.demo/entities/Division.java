@@ -1,7 +1,7 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,7 +12,10 @@ import java.util.Set;
 
 @Entity
 @Table(name="divisions")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Division {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
