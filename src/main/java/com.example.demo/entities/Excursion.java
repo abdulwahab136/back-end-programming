@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -27,7 +28,7 @@ public class Excursion {
     private String excursion_title;
 
     @Column(name = "excursion_price")
-    private String excursion_price;
+    private BigDecimal excursion_price;
 
     @Column(name = "image_url")
     private String image_URL;
@@ -41,9 +42,9 @@ public class Excursion {
     private Date last_update;
 
     @ManyToOne
-    private Vacation vacation;
+    @JoinColumn(name = "vacation_id")
+    private Vacation vacations;
 
-    @ManyToMany
-    @JoinTable(name = "excursion_cart_item",joinColumns = @JoinColumn(name = "cart_item_id"),inverseJoinColumns = @JoinColumn(name = "excursion_id"))
-    private Set<CartItem> cartItems;
+    @ManyToMany(mappedBy = "excursions")
+    private Set<CartItem> cartitems;
 }

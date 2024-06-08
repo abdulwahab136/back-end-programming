@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import com.example.demo.services.CheckoutService;
 import com.example.demo.services.Purchase;
@@ -15,12 +15,17 @@ public class CheckoutController {
 
     @Autowired
     public CheckoutController(CheckoutService checkoutService) {
+
         this.checkoutService = checkoutService;
     }
 
 
     @PostMapping("/purchase")
     public PurchaseResponse placeOrder(@RequestBody Purchase purchase) {
+
+        if (purchase.getCartitems() == null) {
+            throw new IllegalArgumentException("Cart items cannot be null");
+        }
 
         PurchaseResponse purchaseResponse = checkoutService.checkout(purchase);
         return purchaseResponse;

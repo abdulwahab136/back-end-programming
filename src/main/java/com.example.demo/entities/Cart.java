@@ -50,4 +50,5 @@ public class Cart {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "cart")
     private Set<CartItem> cartItem;
 
+
 }
