@@ -5,6 +5,7 @@ import com.example.demo.entities.CartItem;
 import com.example.demo.entities.Customer;
 import lombok.*;
 
+
 import java.util.Set;
 
 @Setter
@@ -12,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Purchase {
-
+    
     private Customer customer;
     private Cart cart;
     private Set<CartItem> cartitems;

@@ -30,24 +30,41 @@ public class CheckoutServiceImp implements CheckoutService{
     @Override
     @Transactional
     public PurchaseResponse checkout(Purchase purchase) {
+        String orderTrackingNumber = null;
+        try {
 
-        Customer customer = purchase.getCustomer();
-        customerRepository.save(customer);
+            if (purchase.getCustomer() == null) {
+                throw new IllegalArgumentException("Customer Information is required");
+            }
 
-        String orderTrackingNumber = generateOrderTrackingNumber();
+            if (purchase.getCartitems() == null || purchase.getCartitems().isEmpty()) {
+                throw new IllegalArgumentException("Cart cannot be empty, atleast one item is required");
+            }
 
-        purchase.getCart().setOrderTrackingNumber(orderTrackingNumber);
 
-        purchase.getCart().setCustomer(customer);
+            Customer customer = purchase.getCustomer();
+            customerRepository.save(customer);
 
-        cartRepository.save(purchase.getCart());
-        for (CartItem item : purchase.getCartitems()) {
-            item.setCart(purchase.getCart());
-            cartItemRepository.save(item);
+            orderTrackingNumber = generateOrderTrackingNumber();
+
+            purchase.getCart().setOrderTrackingNumber(orderTrackingNumber);
+
+            purchase.getCart().setCustomer(customer);
+
+            cartRepository.save(purchase.getCart());
+            for (CartItem item : purchase.getCartitems()) {
+                item.setCart(purchase.getCart());
+                cartItemRepository.save(item);
+            }
+
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("There was en Error During Checkout: " + e.getMessage());
         }
 
         return new PurchaseResponse(orderTrackingNumber);
     }
+
 
     private String generateOrderTrackingNumber() {
 
