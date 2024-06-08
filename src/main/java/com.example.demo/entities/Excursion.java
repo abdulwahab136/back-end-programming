@@ -43,6 +43,7 @@ public class Excursion {
     @ManyToOne
     private Vacation vacation;
 
-    @ManyToMany(mappedBy = "excursions")
-    private Set<CartItem> cartitems;
+    @ManyToMany
+    @JoinTable(name = "excursion_cart_item",joinColumns = @JoinColumn(name = "cart_item_id"),inverseJoinColumns = @JoinColumn(name = "excursion_id"))
+    private Set<CartItem> cartItems;
 }

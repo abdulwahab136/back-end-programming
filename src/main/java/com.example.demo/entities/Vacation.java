@@ -42,7 +42,8 @@ public class Vacation {
     @UpdateTimestamp
     private Date last_update;
 
-    @OneToMany(mappedBy = "vacation")
+    @ManyToMany
+    @JoinTable(name = "excursion_cart_item",joinColumns = @JoinColumn(name = "cart_item_id"),inverseJoinColumns = @JoinColumn(name = "excursion_id"))
     private Set<Excursion> excursions;
 
 }
