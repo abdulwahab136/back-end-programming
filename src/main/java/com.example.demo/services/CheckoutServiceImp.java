@@ -14,52 +14,40 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class CheckoutServiceImp implements CheckoutService{
+public class CheckoutServiceImp implements CheckoutService {
 
-    private CartRepository cartRepository;
-    private CartItemRepository cartItemRepository;
-    private CustomerRepository customerRepository;
+    private final CartRepository cartRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public CheckoutServiceImp(CartRepository cartRepository, CartItemRepository cartItemRepository, CustomerRepository customerRepository){
+    public CheckoutServiceImp(CartRepository cartRepository, CustomerRepository customerRepository) {
         this.cartRepository = cartRepository;
-        this.cartItemRepository = cartItemRepository;
         this.customerRepository = customerRepository;
     }
 
     @Override
     @Transactional
     public PurchaseResponse checkout(Purchase purchase) {
-
-        Cart cart = purchase.getCart();
-
-        String orderTrackingNumber = generateOrderTrackingNumber();
-        cart.setOrderTrackingNumber(orderTrackingNumber);
-
-        Set<CartItem> cartitems = purchase.getCartitems();
-
-        if (purchase.getCartitems() == null) {
-            throw new IllegalArgumentException("Cart items cannot be null");
-        }
-
-        for (CartItem item : purchase.getCartitems()) {
-            item.setCart(purchase.getCart());
-            cartItemRepository.save(item);
-        }
-
-        Customer customer = purchase.getCustomer();
-        customerRepository.save(customer);
-
-        cartRepository.save(cart);
+    Cart cart = purchase.getCart();
 
 
+    String orderTrackingNumber = generateOrderTrackingNumber();
+    cart.setOrderTrackingNumber(orderTrackingNumber);
 
-        return new PurchaseResponse(orderTrackingNumber);
+
+    Set<CartItem> cartItems = purchase.getCartItems();
+    if (cartItems == null || cartItems.isEmpty()){
+
+        return new PurchaseResponse("Cart is Empty");
     }
+    cart.setCartItem(cartItems);
 
+        return new    PurchaseResponse(orderTrackingNumber);
+}
 
     private String generateOrderTrackingNumber() {
-
+        // generate a random UUID number (UUID version-4)
         return UUID.randomUUID().toString();
     }
 }
+

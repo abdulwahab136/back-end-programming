@@ -23,7 +23,8 @@ public class CheckoutController {
     @PostMapping("/purchase")
     public PurchaseResponse placeOrder(@RequestBody Purchase purchase) {
 
-        if (purchase.getCartitems() == null) {
+
+        if (purchase.getCartItems() == null) {
             throw new IllegalArgumentException("Cart items cannot be null");
         }
 

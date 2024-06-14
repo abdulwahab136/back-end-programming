@@ -13,8 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Purchase {
-    
+
     private Customer customer;
     private Cart cart;
-    private Set<CartItem> cartitems;
+    private Set<CartItem> cartItems;
 }

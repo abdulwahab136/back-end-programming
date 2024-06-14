@@ -2,7 +2,6 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -42,8 +41,8 @@ public class Excursion {
     private Date last_update;
 
     @ManyToOne
-    @JoinColumn(name = "vacation_id")
-    private Vacation vacations;
+    @JoinColumn(name = "vacation_id",nullable = false)
+    private Vacation vacation;
 
     @ManyToMany(mappedBy = "excursions")
     private Set<CartItem> cartitems;
