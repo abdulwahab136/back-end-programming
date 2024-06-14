@@ -6,6 +6,7 @@ import com.example.demo.dao.CustomerRepository;
 import com.example.demo.entities.Cart;
 import com.example.demo.entities.CartItem;
 import com.example.demo.entities.Customer;
+import com.example.demo.entities.StatusType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,14 @@ public class CheckoutServiceImp implements CheckoutService {
 
     private final CartRepository cartRepository;
     private final CustomerRepository customerRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
-    public CheckoutServiceImp(CartRepository cartRepository, CustomerRepository customerRepository) {
+    public CheckoutServiceImp(CartRepository cartRepository, CustomerRepository customerRepository,CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
         this.customerRepository = customerRepository;
+
     }
 
     @Override
@@ -40,13 +44,17 @@ public class CheckoutServiceImp implements CheckoutService {
 
         return new PurchaseResponse("Cart is Empty");
     }
-    cart.setCartItem(cartItems);
 
-        return new    PurchaseResponse(orderTrackingNumber);
+    cart.setStatus(StatusType.ordered);
+
+     cartRepository.save(cart);
+
+
+
+    return new    PurchaseResponse(orderTrackingNumber);
 }
 
     private String generateOrderTrackingNumber() {
-        // generate a random UUID number (UUID version-4)
         return UUID.randomUUID().toString();
     }
 }

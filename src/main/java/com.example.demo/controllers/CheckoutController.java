@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CheckoutController {
 
-    private CheckoutService checkoutService;
+    private final CheckoutService checkoutService;
 
     @Autowired
     public CheckoutController(CheckoutService checkoutService) {
@@ -24,12 +24,9 @@ public class CheckoutController {
     public PurchaseResponse placeOrder(@RequestBody Purchase purchase) {
 
 
-        if (purchase.getCartItems() == null) {
-            throw new IllegalArgumentException("Cart items cannot be null");
-        }
 
         PurchaseResponse purchaseResponse = checkoutService.checkout(purchase);
-        return purchaseResponse;
+        return checkoutService.checkout(purchase);
     }
 
 }
