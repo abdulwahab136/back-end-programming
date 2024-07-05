@@ -7,12 +7,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "cart_items")
 @Getter
 @Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItem {
@@ -28,7 +30,7 @@ public class CartItem {
 
     @ManyToMany
     @JoinTable(name = "excursion_cartitem",joinColumns = @JoinColumn(name = "cart_item_id"),inverseJoinColumns = @JoinColumn(name = "excursion_id"))
-    private Set<Excursion> excursions;
+    private Set<Excursion> excursions = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "cart_id",nullable = false)

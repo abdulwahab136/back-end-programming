@@ -3,10 +3,7 @@ package com.example.demo.services;
 import com.example.demo.dao.CartItemRepository;
 import com.example.demo.dao.CartRepository;
 import com.example.demo.dao.CustomerRepository;
-import com.example.demo.entities.Cart;
-import com.example.demo.entities.CartItem;
-import com.example.demo.entities.Customer;
-import com.example.demo.entities.StatusType;
+import com.example.demo.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +32,7 @@ public class CheckoutServiceImp implements CheckoutService {
     Cart cart = purchase.getCart();
 
 
+
     String orderTrackingNumber = generateOrderTrackingNumber();
     cart.setOrderTrackingNumber(orderTrackingNumber);
 
@@ -45,13 +43,25 @@ public class CheckoutServiceImp implements CheckoutService {
         return new PurchaseResponse("Cart is Empty");
     }
 
-    cart.setStatus(StatusType.ordered);
+    cartItems.forEach(cartItem -> {
+        cartItem.setCart(cart);
+        cart.setCartItems(cartItems);
 
+
+        Vacation vacation = cartItem.getVacation();
+        Set<Excursion> excursions = cartItem.getExcursions();
+        for (Excursion excursion : excursions){
+            excursion.setVacation(vacation);
+        }
+
+    });
+
+     cart.setStatus(StatusType.ordered);
      cartRepository.save(cart);
 
 
 
-    return new    PurchaseResponse(orderTrackingNumber);
+    return new  PurchaseResponse(orderTrackingNumber);
 }
 
     private String generateOrderTrackingNumber() {
