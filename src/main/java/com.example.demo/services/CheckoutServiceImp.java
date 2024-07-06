@@ -15,15 +15,11 @@ import java.util.UUID;
 public class CheckoutServiceImp implements CheckoutService {
 
     private final CartRepository cartRepository;
-    private final CustomerRepository customerRepository;
-    private final CartItemRepository cartItemRepository;
+
 
     @Autowired
-    public CheckoutServiceImp(CartRepository cartRepository, CustomerRepository customerRepository,CartItemRepository cartItemRepository) {
+    public CheckoutServiceImp(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
-        this.cartItemRepository = cartItemRepository;
-        this.customerRepository = customerRepository;
-
     }
 
     @Override
